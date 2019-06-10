@@ -1,0 +1,11 @@
+.gallery-figcaption--info,
+.gallery-modal--close,
+.gallery-control {
+    display: none;
+}
+
+.gallery-figcaption--thumbnails {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
