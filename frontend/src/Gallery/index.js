@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-
 import ReactBnbGallery from 'react-bnb-gallery';
+
 import './index.css';
 
 const photos = [{
@@ -23,23 +23,25 @@ const photos = [{
 class Gallery extends Component {
   constructor(props) {
     super(props);
-    this.state = { galleryOpened: true };
-    this.toggleGallery = this.toggleGallery.bind(this);
+    this.onThumbnailSelect = this.onThumbnailSelect.bind(this);
   }
 
-  toggleGallery() {
-    this.setState(prevState => ({
-      galleryOpened: !prevState.galleryOpened
-    }));
+  onThumbnailSelect() {
+    const { history } = this.props;
+    history.push('/player');
+    console.log('fuck you');
   }
+
 
   render () {
     return (
-    //   <button onClick={this.toggleGallery}>Open photo gallery</button>
-      <ReactBnbGallery
-        show={this.state.galleryOpened}
-        photos={photos}
-        onClose={this.toggleGallery} />
+        <div>
+            <ReactBnbGallery
+                show={true}
+                photos={photos}
+                activePhotoPressed={this.onThumbnailSelect}    
+            />
+        </div>
     )
   }
 }
