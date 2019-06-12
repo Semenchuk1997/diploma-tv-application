@@ -9,3 +9,8 @@
     justify-content: center;
     margin-top: 2rem;
 }
+
+.media-image {
+    height: 100%;
+    width: 100%;
+}
