@@ -13,8 +13,8 @@ import './index.css';
 const config = {
     bucketName: 'videoondemand-source-1kujxj8xrfj43',
     region: 'us-east-1',
-    accessKeyId: 'AKIAIHIBF5SBHSEBHPPQ',
-    secretAccessKey: '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',
+    accessKeyId: 'AKIAIUC5R3E3Z7NS6X5Q',
+    secretAccessKey: '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',
 }
 
 class Gallery extends Component {
