@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import ReactBnbGallery from 'react-bnb-gallery';
 import axios from 'axios';
+import ImageGallery from 'react-image-gallery';
+import S3FileUpload from 'react-s3';
 import BounceLoader from 'react-spinners/BounceLoader';
 import { css } from '@emotion/core';
 
@@ -8,7 +9,13 @@ import VideoPlayer from '../VideoPlayer';
 
 import { URL } from '../global';
 import './index.css';
-import 'video-react/dist/video-react.css';
+
+const config = {
+    bucketName: 'videoondemand-source-1kujxj8xrfj43',
+    region: 'us-east-1',
+    accessKeyId: 'AKIAIHIBF5SBHSEBHPPQ',
+    secretAccessKey: '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',
+}
 
 class Gallery extends Component {
     constructor(props) {
@@ -23,7 +30,7 @@ class Gallery extends Component {
 
         this.togglePlayerShow = this.togglePlayerShow.bind(this);
         this.onGetData = this.onGetData.bind(this);
-        this.openVideoPlayer = this.openVideoPlayer.bind(this);
+        this.showVideoPlayer = this.showVideoPlayer.bind(this);
     }
 
     togglePlayerShow() {
@@ -32,29 +39,36 @@ class Gallery extends Component {
         this.setState({ isShowPlayer: !isShowPlayer });
     }
 
-    openVideoPlayer() {
-        const { data } = this.state;
-        const activeThumbnail = document.querySelector('.photo.media-image').getAttribute('src');
-        const videoData = data.find(item => item.thumbnailUrl === activeThumbnail);
-        const videoSrc = videoData.mp4Url;
-
-        this.setState({ videoSrc, isShowPlayer: true });
-    }
-
     onGetData(data) {
         setTimeout(() => {
             this.setState({ data, isLoading: false });
         }, 1000)
     };
 
-    getPhotos(data) {
+    getItems(data) {
         return data.map(item => {
-            const { thumbnailUrl } = item;
+            const { thumbnail } = item;
             return {
-                photo: thumbnailUrl,
-                thumbnail: thumbnailUrl
+                original: thumbnail,
+                thumbnail: thumbnail
             }
         });
+    };
+
+    upload(e) {
+        const file = e.target.files[0];
+        console.log(file);
+        S3FileUpload.uploadFile(file, config)
+            .then(data => console.log(data))
+            .catch(err => console.error(err))
+    } 
+
+    showVideoPlayer(e) {
+        const target = e.target;
+        const thumbnail = target.getAttribute('src');
+        const { original } = this.state.data.find(item => item.thumbnail === thumbnail);
+
+        this.setState({ videoSrc: original, isShowPlayer: true });
     }
 
     componentDidMount() {
@@ -80,7 +94,7 @@ class Gallery extends Component {
 
     render() {
         const { data, isShowPlayer, isLoading, videoSrc } = this.state;
-        const photos = this.getPhotos(data);
+        const items = this.getItems(data);
         const override = css`
             display: block;
             margin: 20% auto;
@@ -92,11 +106,17 @@ class Gallery extends Component {
                 videoSrc={videoSrc}
                 onBackSpacePressed={this.togglePlayerShow}
             /> :
-            <ReactBnbGallery
-                show={true}
-                photos={photos}
-                activePhotoPressed={this.openVideoPlayer}
-            />
+            <div>
+                <ImageGallery
+                    items={items}
+                    onClick={this.showVideoPlayer}
+                />
+                <input
+                    type="file"
+                    className="custom-file-input"
+                    onChange={this.upload}
+                />
+            </div>
 
         return (
             <div>
