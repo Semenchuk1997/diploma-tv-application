@@ -13,8 +13,8 @@ import './index.css';
 const config = {
     bucketName: 'videoondemand-source-1kujxj8xrfj43',
     region: 'us-east-1',
-    accessKeyId: 'AKIAIUC5R3E3Z7NS6X5Q',
-    secretAccessKey: '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',
+    accessKeyId: 'AKIAIZTAUW7CLXVSZVBA',
+    secretAccessKey: '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',
 }
 
 class Gallery extends Component {
@@ -31,6 +31,7 @@ class Gallery extends Component {
         this.togglePlayerShow = this.togglePlayerShow.bind(this);
         this.onGetData = this.onGetData.bind(this);
         this.showVideoPlayer = this.showVideoPlayer.bind(this);
+        this.upload = this.upload.bind(this);
     }
 
     togglePlayerShow() {
@@ -57,10 +58,18 @@ class Gallery extends Component {
 
     upload(e) {
         const file = e.target.files[0];
-        console.log(file);
+
+        this.setState({ isLoading: true });
+
         S3FileUpload.uploadFile(file, config)
-            .then(data => console.log(data))
-            .catch(err => console.error(err))
+            .then(data => { 
+                this.setState({ isLoading: false });
+                alert('File sent')
+            })
+            .catch(err => {
+                alert('Something went wrong :(')
+                this.setState({ isLoading: false })
+            })
     } 
 
     showVideoPlayer(e) {
@@ -113,7 +122,7 @@ class Gallery extends Component {
                 />
                 <input
                     type="file"
-                    className="custom-file-input"
+                    className="file-input"
                     onChange={this.upload}
                 />
             </div>
@@ -125,7 +134,7 @@ class Gallery extends Component {
                     sizeUnit={"px"}
                     size={150}
                     color={'#123abc'}
-                    loading={this.state.isLoading}
+                    loading={isLoading}
                 />
                 
                 {!isLoading && content}

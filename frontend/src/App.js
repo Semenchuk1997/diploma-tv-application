@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 import Gallery from './Gallery';
@@ -11,9 +12,8 @@ function App() {
     <main className="App">
         <BrowserRouter>
             <Switch>
-                <Route exact path="/" component={Gallery}/>
-                <Route path="/player" component={VideoPlayer}/>
-                <Route path="/login" component={Login}/>
+                <Route exact path="/" component={Login}/>
+                <Route path="/home" component={Gallery}/>
             </Switch>
         </BrowserRouter>
     </main>
