@@ -1,0 +1,43 @@
+@import "../../node_modules/react-image-gallery/styles/css/image-gallery.css";
+
+.image-gallery {
+    width: 65%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.image-gallery-right-nav,
+.image-gallery-left-nav,
+.image-gallery-fullscreen-button,
+.image-gallery-play-button {
+    display: none;
+}
+
+.file-input {
+    position: absolute;
+    top: 92%;
+    left: 45%;
+    height: 65px;
+    border-radius: 20px;
+    outline: none;
+    color: black;
+}
+
+.file-input::before {
+    position: absolute;
+    content: 'Upload';
+    display: inline-block;
+    background: blue;
+    border: 2px solid blue;
+    border-radius: 20px;
+    padding: 10px 30px;
+    color: white;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 26px;
+  }
