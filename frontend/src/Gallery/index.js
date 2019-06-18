@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import ImageGallery from 'react-image-gallery';
 import S3FileUpload from 'react-s3';
 import BounceLoader from 'react-spinners/BounceLoader';
@@ -7,7 +6,7 @@ import { css } from '@emotion/core';
 
 import VideoPlayer from '../VideoPlayer';
 
-import { URL } from '../global';
+// import { URL } from '../global';
 import './index.css';
 
 const config = {
@@ -17,7 +16,7 @@ const config = {
     secretAccessKey: 'FqLsB5Nsnj/NDAK0T+TiTHf2xr0s+0+tl7cxPZlt',
 }
 
-const items = [
+const mockItems = [
     {
         original: 'https://d2j2q9sapwwtui.cloudfront.net/f14c296a-42dd-4fe6-9c3d-851bb43fa216/mp4/Waterfall - 6998_Mp4_Avc_Aac_16x9_1280x720p_24Hz_4.5Mbps_qvbr.mp4',
         thumbnail: 'https://d2j2q9sapwwtui.cloudfront.net/f14c296a-42dd-4fe6-9c3d-851bb43fa216/thumbnails/Waterfall - 6998_tumb.0000001.jpg'
@@ -55,9 +54,9 @@ class Gallery extends Component {
         this.setState({ isShowPlayer: !isShowPlayer });
     }
 
-    onGetData() {
+    onGetData(data) {
         setTimeout(() => {
-            this.setState({ data: items, isLoading: false });
+            this.setState({ data, isLoading: false });
         }, 1000)
     };
 
@@ -105,22 +104,22 @@ class Gallery extends Component {
             document.addEventListener('keyDown', this.handleBackSpace, false);
         }
 
-        // if (!data.length) {
-        //     axios.get(URL)
-        //     .then(response => {
-        //         this.onGetData(response.data);
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     });
-        // }
+        this.onGetData(mockItems);
 
-        this.onGetData();
+        setTimeout(() => {
+            this.workSimulation();
+        }, 7000);
+    }
+
+    workSimulation(){
+        const { original } = this.state.data[0];
+
+        this.setState({ videoSrc: original, isShowPlayer: true });
     }
 
     render() {
         const { data, isShowPlayer, isLoading, videoSrc } = this.state;
-        const gellaryItems = this.getItems(items);
+        const items = this.getItems(data);
         const override = css`
             display: block;
             margin: 20% auto;
@@ -134,14 +133,14 @@ class Gallery extends Component {
             /> :
             <div>
                 <ImageGallery
-                    items={gellaryItems}
+                    items={items}
                     onClick={this.showVideoPlayer}
                 />
-                <input
+                {/* <input
                     type="file"
                     className="file-input"
                     onChange={this.upload}
-                />
+                /> */}
             </div>
 
         return (
