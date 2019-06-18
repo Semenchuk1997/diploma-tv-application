@@ -17,6 +17,21 @@ const config = {
     secretAccessKey: 'FqLsB5Nsnj/NDAK0T+TiTHf2xr0s+0+tl7cxPZlt',
 }
 
+const items = [
+    {
+        original: 'https://d2j2q9sapwwtui.cloudfront.net/f14c296a-42dd-4fe6-9c3d-851bb43fa216/mp4/Waterfall - 6998_Mp4_Avc_Aac_16x9_1280x720p_24Hz_4.5Mbps_qvbr.mp4',
+        thumbnail: 'https://d2j2q9sapwwtui.cloudfront.net/f14c296a-42dd-4fe6-9c3d-851bb43fa216/thumbnails/Waterfall - 6998_tumb.0000001.jpg'
+    },
+    {
+        original: 'https://d2j2q9sapwwtui.cloudfront.net/f34c2bb9-9258-4dc9-aa1c-9354933687df/mp4/CNC - Le lien - TV Commercial_Mp4_Avc_Aac_16x9_1280x720p_24Hz_4.5Mbps_qvbr.mp4',
+        thumbnail: 'https://d2j2q9sapwwtui.cloudfront.net/f34c2bb9-9258-4dc9-aa1c-9354933687df/thumbnails/CNC - Le lien - TV Commercial_tumb.0000002.jpg'
+    },
+    {
+        original: 'https://d2j2q9sapwwtui.cloudfront.net/2aa8b548-eb73-443d-9719-702ac7301ae0/mp4/13176 13th Avenue, South Surrey - Offered at $5,380,000_Mp4_Avc_Aac_16x9_1280x720p_24Hz_4.5Mbps_qvbr.mp4',
+        thumbnail: 'https://d2j2q9sapwwtui.cloudfront.net/2aa8b548-eb73-443d-9719-702ac7301ae0/thumbnails/13176 13th Avenue, South Surrey - Offered at $5,380,000_tumb.0000029.jpg'
+    }
+];
+
 class Gallery extends Component {
     constructor(props) {
         super(props);
@@ -40,9 +55,9 @@ class Gallery extends Component {
         this.setState({ isShowPlayer: !isShowPlayer });
     }
 
-    onGetData(data) {
+    onGetData() {
         setTimeout(() => {
-            this.setState({ data, isLoading: false });
+            this.setState({ data: items, isLoading: false });
         }, 1000)
     };
 
@@ -90,20 +105,22 @@ class Gallery extends Component {
             document.addEventListener('keyDown', this.handleBackSpace, false);
         }
 
-        if (!data.length) {
-            axios.get(URL)
-            .then(response => {
-                this.onGetData(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-        }
+        // if (!data.length) {
+        //     axios.get(URL)
+        //     .then(response => {
+        //         this.onGetData(response.data);
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     });
+        // }
+
+        this.onGetData();
     }
 
     render() {
         const { data, isShowPlayer, isLoading, videoSrc } = this.state;
-        const items = this.getItems(data);
+        const gellaryItems = this.getItems(items);
         const override = css`
             display: block;
             margin: 20% auto;
@@ -117,7 +134,7 @@ class Gallery extends Component {
             /> :
             <div>
                 <ImageGallery
-                    items={items}
+                    items={gellaryItems}
                     onClick={this.showVideoPlayer}
                 />
                 <input
